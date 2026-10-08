@@ -1,2 +1,13 @@
-.vscode
-2/a.out
+./vscode
+*.exe
+*.out
+*.app
+*.bin
+
+# Wordファイルを除外
+*.docx
+*.doc
+
+# Wordの操作中に生成される一時ファイル（~$で始まるファイル）を除外
+~$*.docx
+~$*.doc
