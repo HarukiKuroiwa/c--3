@@ -1,7 +1,16 @@
 #include <sys/types.h>
 #include <curses.h>
+#include<signal.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+bool ok=false;
+
+void signal_handler(int signal){
+    write(STDOUT_FILENO, "SIGUSR1 Received!\n", 18);
+    ok=true;
+}
+
 
 int main(void)
 {
@@ -10,6 +19,12 @@ int main(void)
     int cnt = -1;
     int result[] = {-1, -1, -1, -1, -1};
     int v[5] = {0};
+
+    struct sigaction sa;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_handler=signal_handler;
+    sa.sa_flags=0;
+    sigaction(SIGUSR1,&sa,NULL);
 
     initscr();
     getmaxyx(stdscr,row,col);
@@ -86,6 +101,7 @@ int main(void)
 	        result[cnt] = v[cnt];
 	    }
         }
+        ok=false;
 	// 合計値の表示
 	if (cnt == 4) {
 	    int s = 0;
