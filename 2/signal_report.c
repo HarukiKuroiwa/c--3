@@ -7,7 +7,6 @@
 bool ok=false;
 
 void signal_handler(int signal){
-    write(STDOUT_FILENO, "SIGUSR1 Received!\n", 18);
     ok=true;
 }
 
@@ -95,7 +94,7 @@ int main(void)
         }
 	// 能力値の決定（スペースキーで入力）
         k = getch();
-	if (k == 32) {
+	if (ok) {
 	    cnt++;
 	    if (cnt < 5) {
 	        result[cnt] = v[cnt];
