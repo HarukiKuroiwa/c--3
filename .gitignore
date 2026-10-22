@@ -4,6 +4,9 @@
 *.app
 *.bin
 
+server
+client
+
 # Wordファイルを除外
 *.docx
 *.doc
