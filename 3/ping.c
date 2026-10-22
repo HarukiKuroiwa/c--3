@@ -91,7 +91,6 @@ int main(int argc, char **argv)
 
         /* ICMPパケットの送信 */
         n = sendto(soc, (char *)&icmphdr, sizeof(icmphdr), 0, (struct sockaddr *)&addr, sizeof(addr));
-        gettimeofday(&end, NULL);
         if (n < 1) {
             perror("sendto");
             return 1;
@@ -100,6 +99,7 @@ int main(int argc, char **argv)
         /* ICMPパケットの受信 */
         socklen_t addrlen = sizeof(addr);
         n = recvfrom(soc, buf, sizeof(buf), 0,(struct sockaddr *)&addr,&addrlen);
+        gettimeofday(&end, NULL);
         if (n < 1) {
             perror("recv");
             return 1;
@@ -130,6 +130,6 @@ int main(int argc, char **argv)
 
 void signal_handler(int signal)
 {
-    printf("\n---%s ping statistics ---\n %d packets transmitted, %d received, %0.3f%% packet loss\n",address, transmitted, received, (double)(transmitted - received) / transmitted * 100);
+    printf("\n---%s ping statistics ---\n %d packets transmitted, %d received, %0.3f%% packet loss time %0.3f ms\n rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n",address, transmitted, received, (double)(transmitted - received) / transmitted * 100,rtt_sum,rtt_min,rtt_max, rtt_sum / received, rtt_max);
     exit(1);
 }
