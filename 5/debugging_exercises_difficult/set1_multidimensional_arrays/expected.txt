@@ -1,0 +1,27 @@
+original (3x3)
+  1  2  3
+  4  5  6
+  7  8  9
+rotated (3x3)
+  7  4  1
+  8  5  2
+  9  6  3
+
+original (2x4)
+  1  2  3  4
+  5  6  7  8
+rotated (4x2)
+  5  1
+  6  2
+  7  3
+  8  4
+
+original (4x2)
+  1  2
+  3  4
+  5  6
+  7  8
+rotated (2x4)
+  7  5  3  1
+  8  6  4  2
+

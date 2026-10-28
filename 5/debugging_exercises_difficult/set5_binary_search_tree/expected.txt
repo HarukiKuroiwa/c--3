@@ -1,0 +1,4 @@
+start       : 20 30 40 50 60 65 70 80 | BST: OK
+delete 20   : 30 40 50 60 65 70 80 | BST: OK
+delete 60   : 30 40 50 65 70 80 | BST: OK
+delete 50   : 30 40 65 70 80 | BST: OK
