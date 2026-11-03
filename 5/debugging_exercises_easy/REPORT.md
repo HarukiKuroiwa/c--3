@@ -1,7 +1,7 @@
 # デバッグ演習 (easy) レポート
 
-学籍番号: 
-氏名: 
+学籍番号: 1116241035
+氏名: 黒岩春希
 
 ## AIの利用
 
@@ -18,11 +18,27 @@
 
 ### 1. 症状（どんな条件で失敗し、どんな条件では失敗しなかったか）
 
+problem.c: In function ‘findMax’:
+problem.c:7:12: warning: ‘max’ may be used uninitialized [-Wmaybe-uninitialized]
+    7 |         if (arr[i] > max) {
+      |            ^
+problem.c:5:9: note: ‘max’ was declared here
+    5 |     int max;
+      |         ^~~
+
+maxが定義されてないよてきな警告が出てる。
 
 ### 2. 原因（どの関数の何行目の、何が間違っていたか）
 
+findMax関数の5,6行目
+5行目はmaxの初期値を定義していない。
+6行目は添え字iをsizeまで回しているので配列外参照している。
+
 
 ### 3. 修正内容（何をどう変えたか）
+findMax関数の5,6行目
+5行目はmaxの初期値をarrの１番目にした。
+6行目は添え字iをsize未満までにした。
 
 
 ### 4. なぜその修正で直るのか

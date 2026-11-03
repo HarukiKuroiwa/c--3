@@ -27,15 +27,15 @@ int main(){
         perror("listen error");
         exit(1);
     }
-    struct sockaddr_in client_addr;
-    socklen_t client_len=sizeof(client_addr);
     while(1){
+        struct sockaddr_in client_addr;
+        socklen_t client_len=sizeof(client_addr);
         int newsockfd=accept(sockfd,(struct sockaddr*)&client_addr,&client_len);
-        pid_t pid=fork();
         if(newsockfd<0){
             perror("accept error");
             exit(1);
         }
+        pid_t pid=fork();
         if(pid==0){
             close(sockfd);
             char buffer[4096];
@@ -43,14 +43,32 @@ int main(){
             int n=recv(newsockfd,buffer,sizeof(buffer),0);
             if(n<=0){
                 perror("recv error");
+                close(newsockfd);
                 break;
             }
-            printf("Received filename: %s\n",buffer);
-            FILE *fp=fopen(buffer,"r");
+            char method[16],uri[256];
+            sscanf(buffer,"%15s %255s",method,uri);
+            char filename[256];
+            snprintf(filename,sizeof(filename),"%s",uri+1);
+            printf("Received filename: %s\n",filename);
+            FILE *fp=fopen(filename,"r");
             if(fp==NULL){
                 perror("file open error");
                 break;
             }
+            fseek(fp,0,SEEK_END);
+            long long filesize=ftell(fp);
+            fseek(fp,0,SEEK_SET);
+            char header[256];
+            snprintf(header, sizeof(header), 
+                "HTTP/1.1 200 OK\r\n"
+                "Content-Type: text/html; charset=UTF-8\r\n"
+                "Content-Length: %lld\r\n"
+                "Connection: close\r\n"
+                "\r\n", filesize);
+            printf("Sending Header:\n%s", header);
+            send(newsockfd,header,strlen(header),0);
+            memset(buffer,0,sizeof(buffer));
             while(fgets(buffer,sizeof(buffer),fp)!=NULL){
                 send(newsockfd,buffer,strlen(buffer),0);
             }

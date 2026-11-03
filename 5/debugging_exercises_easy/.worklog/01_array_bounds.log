@@ -1,1 +1,70 @@
 === 2026-10-28 15:56:10 run exit=0 cksum=550501939
+=== 2026-10-28 15:57:34 check FAIL cksum=550501939
+=== 2026-10-28 15:58:50 run exit=0 cksum=630490364
+@@ -3,7 +3,7 @@
+ 
+ int findMax(int arr[], int size) {
+     int max;
+-    for (int i = 0; i <= size; i++) {
++    for (int i = 0; i < size; i++) {
+         if (arr[i] > max) {
+             max = arr[i];
+         }
+=== 2026-10-28 15:59:40 run exit=0 cksum=1005105024
+@@ -2,7 +2,7 @@
+ #include <stdio.h>
+ 
+ int findMax(int arr[], int size) {
+-    int max;
++    int max=arr[0];
+     for (int i = 0; i < size; i++) {
+         if (arr[i] > max) {
+             max = arr[i];
+=== 2026-10-28 15:59:57 check PASS cksum=1005105024
+=== 2026-10-28 16:01:18 run exit=0 cksum=550501939
+@@ -2,8 +2,8 @@
+ #include <stdio.h>
+ 
+ int findMax(int arr[], int size) {
+-    int max=arr[0];
+-    for (int i = 0; i < size; i++) {
++    int max;
++    for (int i = 0; i <= size; i++) {
+         if (arr[i] > max) {
+             max = arr[i];
+         }
+=== 2026-10-28 16:13:37 run exit=0 cksum=1005105024
+@@ -2,8 +2,8 @@
+ #include <stdio.h>
+ 
+ int findMax(int arr[], int size) {
+-    int max;
+-    for (int i = 0; i <= size; i++) {
++    int max=arr[0];
++    for (int i = 0; i < size; i++) {
+         if (arr[i] > max) {
+             max = arr[i];
+         }
+=== 2026-10-28 16:13:45 check PASS cksum=1005105024
+=== 2026-10-28 16:48:11 run exit=0 cksum=3592322580
+@@ -3,7 +3,7 @@
+ 
+ int findMax(int arr[], int size) {
+     int max=arr[0];
+-    for (int i = 0; i < size; i++) {
++    for (int i = 0; i <= size; i++) {
+         if (arr[i] > max) {
+             max = arr[i];
+         }
+=== 2026-10-28 16:48:13 check FAIL cksum=3592322580
+=== 2026-10-28 16:49:39 run exit=0 cksum=550501939
+@@ -2,7 +2,7 @@
+ #include <stdio.h>
+ 
+ int findMax(int arr[], int size) {
+-    int max=arr[0];
++    int max;
+     for (int i = 0; i <= size; i++) {
+         if (arr[i] > max) {
+             max = arr[i];
+=== 2026-10-28 16:49:41 check FAIL cksum=550501939
