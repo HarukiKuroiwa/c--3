@@ -1,0 +1,4 @@
+tests/normal.txt     lines=4 words=13 bytes=73
+tests/crlf.txt       lines=3 words=4 bytes=28
+tests/longline.txt   lines=2 words=502 bytes=4012
+tests/missing.txt    cannot open

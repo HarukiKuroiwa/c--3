@@ -1,0 +1,2 @@
+sold  = 100000 (expected 100000)
+seats = 0 (expected 0)
