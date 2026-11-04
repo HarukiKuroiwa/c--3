@@ -1,0 +1,45 @@
+=== 2026-11-04 10:25:25 run exit=139 cksum=3286891887
+=== 2026-11-04 10:30:30 run exit=139 cksum=4202013110
+@@ -25,7 +25,11 @@
+ 
+     for (int i = 0; i < 3; i++) {
+         struct Person *p = findPerson(members, 3, query[i]);
++        if(&p==NULL){
++            printf("%s\n","NULL");
++        }else{
+         printf("%s: %d\n", p->name, p->age);
++        }
+     }
+     return 0;
+ }
+=== 2026-11-04 10:40:44 run exit=0 cksum=673000632
+@@ -25,7 +25,7 @@
+ 
+     for (int i = 0; i < 3; i++) {
+         struct Person *p = findPerson(members, 3, query[i]);
+-        if(&p==NULL){
++        if(p==NULL){
+             printf("%s\n","NULL");
+         }else{
+         printf("%s: %d\n", p->name, p->age);
+=== 2026-11-04 10:40:48 check FAIL cksum=673000632
+=== 2026-11-04 10:41:45 check FAIL cksum=2677084503
+@@ -26,7 +26,7 @@
+     for (int i = 0; i < 3; i++) {
+         struct Person *p = findPerson(members, 3, query[i]);
+         if(p==NULL){
+-            printf("%s\n","NULL");
++            printf("%s: %s\n",*query[i],"not found");
+         }else{
+         printf("%s: %d\n", p->name, p->age);
+         }
+=== 2026-11-04 10:41:59 check PASS cksum=1467558561
+@@ -26,7 +26,7 @@
+     for (int i = 0; i < 3; i++) {
+         struct Person *p = findPerson(members, 3, query[i]);
+         if(p==NULL){
+-            printf("%s: %s\n",*query[i],"not found");
++            printf("%s: %s\n",query[i],"not found");
+         }else{
+         printf("%s: %d\n", p->name, p->age);
+         }

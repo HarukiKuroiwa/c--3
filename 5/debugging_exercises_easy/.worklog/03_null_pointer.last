@@ -25,7 +25,11 @@ int main(void) {
 
     for (int i = 0; i < 3; i++) {
         struct Person *p = findPerson(members, 3, query[i]);
+        if(p==NULL){
+            printf("%s: %s\n",query[i],"not found");
+        }else{
         printf("%s: %d\n", p->name, p->age);
+        }
     }
     return 0;
 }
