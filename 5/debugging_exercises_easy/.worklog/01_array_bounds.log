@@ -68,3 +68,26 @@
          if (arr[i] > max) {
              max = arr[i];
 === 2026-10-28 16:49:41 check FAIL cksum=550501939
+=== 2026-11-04 09:38:08 run exit=0 cksum=550501939
+=== 2026-11-04 09:38:14 check FAIL cksum=550501939
+=== 2026-11-04 09:39:15 run exit=0 cksum=3592322580
+@@ -2,7 +2,7 @@
+ #include <stdio.h>
+ 
+ int findMax(int arr[], int size) {
+-    int max;
++    int max=arr[0];
+     for (int i = 0; i <= size; i++) {
+         if (arr[i] > max) {
+             max = arr[i];
+=== 2026-11-04 09:39:26 run exit=0 cksum=1005105024
+@@ -3,7 +3,7 @@
+ 
+ int findMax(int arr[], int size) {
+     int max=arr[0];
+-    for (int i = 0; i <= size; i++) {
++    for (int i = 0; i < size; i++) {
+         if (arr[i] > max) {
+             max = arr[i];
+         }
+=== 2026-11-04 09:39:28 check PASS cksum=1005105024
