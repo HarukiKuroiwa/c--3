@@ -1,0 +1,27 @@
+=== 2026-11-04 09:46:11 run exit=134 cksum=3229167779
+=== 2026-11-04 09:47:50 run exit=134 cksum=3729573727
+@@ -3,7 +3,7 @@
+ #include <string.h>
+ 
+ void addTag(char *str) {
+-    strcat(str, " [checked]");
++    strcat(str, "[checked]");
+ }
+ 
+ int main(void) {
+=== 2026-11-04 10:19:37 run exit=0 cksum=1100968821
+@@ -3,11 +3,11 @@
+ #include <string.h>
+ 
+ void addTag(char *str) {
+-    strcat(str, "[checked]");
++    strcat(str, " [checked]");
+ }
+ 
+ int main(void) {
+-    char text[12] = "hello world";
++    char text[256] = "hello world";
+ 
+     printf("before: %s (%zu)\n", text, strlen(text));
+     addTag(text);
+=== 2026-11-04 10:19:44 check PASS cksum=1100968821

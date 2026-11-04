@@ -7,7 +7,7 @@ void addTag(char *str) {
 }
 
 int main(void) {
-    char text[12] = "hello world";
+    char text[256] = "hello world";
 
     printf("before: %s (%zu)\n", text, strlen(text));
     addTag(text);
