@@ -25,3 +25,331 @@
      printf("before: %s (%zu)\n", text, strlen(text));
      addTag(text);
 === 2026-11-04 10:19:44 check PASS cksum=1100968821
+=== 2026-11-04 10:46:40 run exit=0 cksum=1100968821
+=== 2026-11-04 10:46:44 check PASS cksum=1100968821
+=== 2026-11-04 10:47:50 check FAIL cksum=1659226054
+@@ -3,6 +3,7 @@
+ #include <string.h>
+ 
+ void addTag(char *str) {
++    printf(sizeof(str));
+     strcat(str, " [checked]");
+ }
+ 
+=== 2026-11-04 10:47:51 run exit=139 cksum=1659226054
+=== 2026-11-04 10:48:01 run exit=0 cksum=2253228088
+@@ -3,7 +3,7 @@
+ #include <string.h>
+ 
+ void addTag(char *str) {
+-    printf(sizeof(str));
++    printf("%d",sizeof(str));
+     strcat(str, " [checked]");
+ }
+ 
+=== 2026-11-04 10:48:09 run exit=0 cksum=1617510954
+@@ -3,7 +3,7 @@
+ #include <string.h>
+ 
+ void addTag(char *str) {
+-    printf("%d",sizeof(str));
++    printf("%ld",sizeof(str));
+     strcat(str, " [checked]");
+ }
+ 
+=== 2026-11-04 10:48:21 run exit=0 cksum=4243884356
+@@ -3,7 +3,7 @@
+ #include <string.h>
+ 
+ void addTag(char *str) {
+-    printf("%ld",sizeof(str));
++    printf("%ld\n",sizeof(str));
+     strcat(str, " [checked]");
+ }
+ 
+=== 2026-11-04 10:49:35 run exit=0 cksum=457785303
+@@ -3,7 +3,7 @@
+ #include <string.h>
+ 
+ void addTag(char *str) {
+-    printf("%ld\n",sizeof(str));
++    printf("%ld\n",sizeof(char));
+     strcat(str, " [checked]");
+ }
+ 
+=== 2026-11-04 10:49:44 run exit=0 cksum=914405210
+@@ -3,7 +3,7 @@
+ #include <string.h>
+ 
+ void addTag(char *str) {
+-    printf("%ld\n",sizeof(char));
++    printf("%ld\n",sizeof(char*));
+     strcat(str, " [checked]");
+ }
+ 
+=== 2026-11-04 10:50:07 run exit=0 cksum=932670044
+@@ -4,6 +4,7 @@
+ 
+ void addTag(char *str) {
+     printf("%ld\n",sizeof(char*));
++    printf("%ld\n",sizeof(str));
+     strcat(str, " [checked]");
+ }
+ 
+=== 2026-11-04 10:51:38 run exit=0 cksum=653256682
+@@ -4,7 +4,7 @@
+ 
+ void addTag(char *str) {
+     printf("%ld\n",sizeof(char*));
+-    printf("%ld\n",sizeof(str));
++    printf("%ld\n",sizeof(*str));
+     strcat(str, " [checked]");
+ }
+ 
+=== 2026-11-04 10:54:00 run exit=0 cksum=1743334441
+@@ -3,8 +3,13 @@
+ #include <string.h>
+ 
+ void addTag(char *str) {
+-    printf("%ld\n",sizeof(char*));
+-    printf("%ld\n",sizeof(*str));
++    int size=0;
++    auto tmp=str;
++    while(tmp!='\n'){
++        tmp++;
++        size++;
++    }
++    printf("%d\n",size);
+     strcat(str, " [checked]");
+ }
+ 
+=== 2026-11-04 10:54:44 run exit=139 cksum=618575248
+@@ -4,8 +4,8 @@
+ 
+ void addTag(char *str) {
+     int size=0;
+-    auto tmp=str;
+-    while(tmp!='\n'){
++    char* tmp=str;
++    while(*tmp!='\n'){
+         tmp++;
+         size++;
+     }
+=== 2026-11-04 10:57:11 run exit=0 cksum=3251680134
+@@ -5,7 +5,7 @@
+ void addTag(char *str) {
+     int size=0;
+     char* tmp=str;
+-    while(*tmp!='\n'){
++    while(*tmp!='\0'){
+         tmp++;
+         size++;
+     }
+=== 2026-11-04 11:05:00 run exit=0 cksum=3251680134
+=== 2026-11-04 11:05:09 run exit=0 cksum=1651446874
+@@ -14,7 +14,7 @@
+ }
+ 
+ int main(void) {
+-    char text[256] = "hello world";
++    char text[256] = "hello worldaaa";
+ 
+     printf("before: %s (%zu)\n", text, strlen(text));
+     addTag(text);
+=== 2026-11-04 11:05:32 run exit=134 cksum=1685442303
+@@ -14,7 +14,7 @@
+ }
+ 
+ int main(void) {
+-    char text[256] = "hello worldaaa";
++    char text[11] = "hello world";
+ 
+     printf("before: %s (%zu)\n", text, strlen(text));
+     addTag(text);
+=== 2026-11-04 11:10:28 run exit=134 cksum=492340442
+@@ -10,6 +10,7 @@
+         size++;
+     }
+     printf("%d\n",size);
++    *str--;
+     strcat(str, " [checked]");
+ }
+ 
+=== 2026-11-04 11:10:33 run exit=134 cksum=3060332219
+@@ -10,7 +10,7 @@
+         size++;
+     }
+     printf("%d\n",size);
+-    *str--;
++    str--;
+     strcat(str, " [checked]");
+ }
+ 
+=== 2026-11-04 11:10:47 run exit=134 cksum=1711093893
+@@ -15,7 +15,7 @@
+ }
+ 
+ int main(void) {
+-    char text[11] = "hello world";
++    char text[12] = "hello world";
+ 
+     printf("before: %s (%zu)\n", text, strlen(text));
+     addTag(text);
+=== 2026-11-04 11:12:54 run exit=134 cksum=3084910785
+@@ -10,7 +10,6 @@
+         size++;
+     }
+     printf("%d\n",size);
+-    str--;
+     strcat(str, " [checked]");
+ }
+ 
+=== 2026-11-04 11:19:43 run exit=134 cksum=3084910785
+=== 2026-11-04 11:22:20 run exit=0 cksum=2943305996
+@@ -10,6 +10,7 @@
+         size++;
+     }
+     printf("%d\n",size);
++    *str=malloc(" [checked]");
+     strcat(str, " [checked]");
+ }
+ 
+=== 2026-11-04 11:28:20 run exit=139 cksum=3389737097
+@@ -10,8 +10,10 @@
+         size++;
+     }
+     printf("%d\n",size);
+-    *str=malloc(" [checked]");
+-    strcat(str, " [checked]");
++    char * nstr=malloc(size+" [checked]");
++    strcpy(nstr,str);
++    strcat(nstr, " [checked]");
++    str=nstr;
+ }
+ 
+ int main(void) {
+=== 2026-11-04 11:28:37 run exit=139 cksum=881953833
+@@ -1,6 +1,7 @@
+ // 02: 文字列の末尾にタグを付ける
+ #include <stdio.h>
+ #include <string.h>
++#include <stdlib.h>
+ 
+ void addTag(char *str) {
+     int size=0;
+=== 2026-11-04 11:29:03 run exit=0 cksum=3671570524
+@@ -11,7 +11,7 @@
+         size++;
+     }
+     printf("%d\n",size);
+-    char * nstr=malloc(size+" [checked]");
++    char* nstr=malloc(size+sizeof(" [checked]"));
+     strcpy(nstr,str);
+     strcat(nstr, " [checked]");
+     str=nstr;
+=== 2026-11-04 11:29:15 run exit=0 cksum=132000610
+@@ -15,6 +15,7 @@
+     strcpy(nstr,str);
+     strcat(nstr, " [checked]");
+     str=nstr;
++    free(nstr);
+ }
+ 
+ int main(void) {
+=== 2026-11-04 11:30:12 run exit=0 cksum=2184638881
+@@ -12,9 +12,8 @@
+     }
+     printf("%d\n",size);
+     char* nstr=malloc(size+sizeof(" [checked]"));
+-    strcpy(nstr,str);
+-    strcat(nstr, " [checked]");
+-    str=nstr;
++    strcpy(str,nstr);
++    strcat(str, " [checked]");
+     free(nstr);
+ }
+ 
+=== 2026-11-04 11:31:49 run exit=0 cksum=132000610
+@@ -12,8 +12,9 @@
+     }
+     printf("%d\n",size);
+     char* nstr=malloc(size+sizeof(" [checked]"));
+-    strcpy(str,nstr);
+-    strcat(str, " [checked]");
++    strcpy(nstr,str);
++    strcat(nstr, " [checked]");
++    str=nstr;
+     free(nstr);
+ }
+ 
+=== 2026-11-04 11:33:09 run exit=0 cksum=613330870
+@@ -15,7 +15,7 @@
+     strcpy(nstr,str);
+     strcat(nstr, " [checked]");
+     str=nstr;
+-    free(nstr);
++    
+ }
+ 
+ int main(void) {
+=== 2026-11-04 11:35:20 run exit=0 cksum=3671570524
+@@ -15,7 +15,6 @@
+     strcpy(nstr,str);
+     strcat(nstr, " [checked]");
+     str=nstr;
+-    
+ }
+ 
+ int main(void) {
+=== 2026-11-04 11:36:12 run exit=0 cksum=3671570524
+=== 2026-11-04 11:36:16 check FAIL cksum=3671570524
+=== 2026-11-04 11:43:33 run exit=0 cksum=1858952357
+@@ -14,7 +14,6 @@
+     char* nstr=malloc(size+sizeof(" [checked]"));
+     strcpy(nstr,str);
+     strcat(nstr, " [checked]");
+-    str=nstr;
+ }
+ 
+ int main(void) {
+=== 2026-11-04 11:44:17 run exit=0 cksum=1858952357
+=== 2026-11-04 11:45:39 run exit=134 cksum=2095166167
+@@ -14,6 +14,7 @@
+     char* nstr=malloc(size+sizeof(" [checked]"));
+     strcpy(nstr,str);
+     strcat(nstr, " [checked]");
++    strcpy(str,nstr);
+ }
+ 
+ int main(void) {
+=== 2026-11-04 12:29:32 run exit=0 cksum=1309738026
+@@ -3,7 +3,7 @@
+ #include <string.h>
+ #include <stdlib.h>
+ 
+-void addTag(char *str) {
++char* addTag(char *str) {
+     int size=0;
+     char* tmp=str;
+     while(*tmp!='\0'){
+@@ -11,17 +11,17 @@
+         size++;
+     }
+     printf("%d\n",size);
+-    char* nstr=malloc(size+sizeof(" [checked]"));
++    char* nstr=malloc(size+sizeof(" [checked]")+1);
+     strcpy(nstr,str);
+     strcat(nstr, " [checked]");
+-    strcpy(str,nstr);
++    return nstr;
+ }
+ 
+ int main(void) {
+     char text[12] = "hello world";
+ 
+     printf("before: %s (%zu)\n", text, strlen(text));
+-    addTag(text);
++    *text=addTag(text);
+     printf("after : %s (%zu)\n", text, strlen(text));
+     return 0;
+ }

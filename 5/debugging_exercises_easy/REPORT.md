@@ -144,23 +144,31 @@ NULLを参照しないため。
 
 ### 1. 症状（どんな条件で失敗し、どんな条件では失敗しなかったか）
 
+make runは正常。
+make checkで出力の期待値が違う
+ problem.c:7:16: runtime error: signed integer overflow: 479001600 * 13 cannot be represented in type 'int'
 
 ### 2. 原因（どの関数の何行目の、何が間違っていたか）
 
+factional関数のresultがint型でlimits.hでintの最大最少を確認すると
+INT_MIN:-2147483648
+INT_MAX:2147483647
+よって13!からオーバーフローする
 
 ### 3. 修正内容（何をどう変えたか）
+resultの型、返り値、出力フォーマット指定子を unsigned long long に変えた
 
 
 ### 4. なぜその修正で直るのか
-
+データ型を変え扱える範囲を正しくして、オーバーフローしなくなったから。
 
 ### 5. 観察と調べ方
 
 <!-- 自分の環境で実際に見た出力や値を貼る（make run の出力、gdb の bt や print の結果、printf で表示した値、サニタイザの報告など）。
      最初に疑った場所と、それが違う（または正しい）と分かった理由も書く -->
-
+make checkしたときのエラーを見てintだとオーバーフローすると思った。
 ## AIの利用
-
+なし
 ---
 
 ## 05_race_condition
