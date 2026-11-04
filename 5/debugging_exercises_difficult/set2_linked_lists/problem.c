@@ -27,13 +27,15 @@ void remove_all(Node **head, int key) {
     Node *cur = *head;
     while (cur != NULL) {
         Node *next = cur->next;
-        if (cur->data == key) {
+        while (cur->data == key) {
+            next=cur->next;
             if (prev == NULL) {
                 *head = next;
             } else {
                 prev->next = next;
             }
             free(cur);
+            cur=next;
         }
         prev = cur;
         cur = next;
