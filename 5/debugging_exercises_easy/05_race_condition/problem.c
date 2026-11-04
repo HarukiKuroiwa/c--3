@@ -6,10 +6,14 @@
 
 int counter = 0;
 
+pthread_mutex_t mutex=PTHREAD_MUTEX_INITIALIZER;
+
 void *increment(void *arg) {
     (void)arg;
     for (int i = 0; i < N; i++) {
+        pthread_mutex_lock(&mutex);
         counter++;
+        pthread_mutex_unlock(&mutex);
     }
     return NULL;
 }

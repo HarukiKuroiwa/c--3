@@ -1,0 +1,67 @@
+=== 2026-11-04 12:49:38 run exit=0 cksum=3389390424
+=== 2026-11-04 12:49:43 run exit=0 cksum=3389390424
+=== 2026-11-04 12:49:45 run exit=0 cksum=3389390424
+=== 2026-11-04 12:49:47 run exit=0 cksum=3389390424
+=== 2026-11-04 12:49:48 run exit=0 cksum=3389390424
+=== 2026-11-04 12:50:42 check FAIL cksum=3389390424
+=== 2026-11-04 12:55:41 run exit=0 cksum=883096358
+@@ -18,8 +18,9 @@
+     pthread_t t1, t2;
+ 
+     pthread_create(&t1, NULL, increment, NULL);
+-    pthread_create(&t2, NULL, increment, NULL);
+     pthread_join(t1, NULL);
++
++    pthread_create(&t2, NULL, increment, NULL);
+     pthread_join(t2, NULL);
+ 
+     printf("counter = %d (expected %d)\n", counter, 2 * N);
+=== 2026-11-04 12:55:44 check PASS cksum=883096358
+=== 2026-11-04 12:55:47 check PASS cksum=883096358
+=== 2026-11-04 13:00:44 run exit=0 cksum=3039994704
+@@ -6,11 +6,15 @@
+ 
+ int counter = 0;
+ 
++pthread_mutex_t mutex=PTHREAD_MUTEX_INITIALIZER;
++
+ void *increment(void *arg) {
+     (void)arg;
++    pthread_mutex_lock(&mutex);
+     for (int i = 0; i < N; i++) {
+         counter++;
+     }
++    pthread_mutex_unlock(&mutex);
+     return NULL;
+ }
+ 
+@@ -18,9 +22,8 @@
+     pthread_t t1, t2;
+ 
+     pthread_create(&t1, NULL, increment, NULL);
+-    pthread_join(t1, NULL);
+-
+     pthread_create(&t2, NULL, increment, NULL);
++    pthread_join(t1, NULL);
+     pthread_join(t2, NULL);
+ 
+     printf("counter = %d (expected %d)\n", counter, 2 * N);
+=== 2026-11-04 13:00:46 check PASS cksum=3039994704
+=== 2026-11-04 13:07:44 submit PASS cksum=3039994704
+=== 2026-11-04 13:09:45 submit PASS cksum=3039994704
+=== 2026-11-04 13:14:46 run exit=0 cksum=175027688
+@@ -10,11 +10,11 @@
+ 
+ void *increment(void *arg) {
+     (void)arg;
+-    pthread_mutex_lock(&mutex);
+     for (int i = 0; i < N; i++) {
++        pthread_mutex_lock(&mutex);
+         counter++;
++        pthread_mutex_unlock(&mutex);
+     }
+-    pthread_mutex_unlock(&mutex);
+     return NULL;
+ }
+ 
+=== 2026-11-04 13:14:48 run exit=0 cksum=175027688

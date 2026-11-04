@@ -10,7 +10,6 @@ char* addTag(char *str) {
         tmp++;
         size++;
     }
-    printf("%d\n",size);
     char* nstr=malloc(size+sizeof(" [checked]")+1);
     strcpy(nstr,str);
     strcat(nstr, " [checked]");
@@ -21,7 +20,7 @@ int main(void) {
     char text[12] = "hello world";
 
     printf("before: %s (%zu)\n", text, strlen(text));
-    *text=addTag(text);
-    printf("after : %s (%zu)\n", text, strlen(text));
+    char *ntext=addTag(text);
+    printf("after : %s (%zu)\n", ntext, strlen(ntext));
     return 0;
 }

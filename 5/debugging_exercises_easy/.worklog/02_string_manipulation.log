@@ -353,3 +353,25 @@
      printf("after : %s (%zu)\n", text, strlen(text));
      return 0;
  }
+=== 2026-11-04 13:07:42 submit FAIL cksum=1309738026
+=== 2026-11-04 13:09:26 run exit=0 cksum=2817048664
+@@ -10,7 +10,6 @@
+         tmp++;
+         size++;
+     }
+-    printf("%d\n",size);
+     char* nstr=malloc(size+sizeof(" [checked]")+1);
+     strcpy(nstr,str);
+     strcat(nstr, " [checked]");
+@@ -21,7 +20,7 @@
+     char text[12] = "hello world";
+ 
+     printf("before: %s (%zu)\n", text, strlen(text));
+-    *text=addTag(text);
+-    printf("after : %s (%zu)\n", text, strlen(text));
++    char *ntext=addTag(text);
++    printf("after : %s (%zu)\n", ntext, strlen(ntext));
+     return 0;
+ }
+=== 2026-11-04 13:09:30 check PASS cksum=2817048664
+=== 2026-11-04 13:09:44 submit PASS cksum=2817048664
