@@ -17,24 +17,46 @@
 ## set1_multidimensional_arrays
 
 ### 1. 症状（どんな条件で失敗し、どんな条件では失敗しなかったか）
-
+3x3行列以外で回転した後の数値が違う
 
 ### 2. 原因（どの関数の何行目の、何が間違っていたか）
-
+rotate関数の
+     dst[j * cols + (rows - 1 - i)] = src[i * cols + j];
 
 ### 3. 修正内容（何をどう変えたか）
-
+     dst[j*rows+(rows-1-i)] = src[i * cols + j];
 
 ### 4. なぜその修正で直るのか
-
+i行j列の行列をj行rows-i-1列に変換する
+i*cols+jで１次元に圧縮している、
+回転したときの圧縮はcols行rows列なので、列ごとに並べないといけない。
 
 ### 5. 観察と調べ方
 
 <!-- 自分の環境で実際に見た出力や値を貼る（make run の出力、gdb の bt や print の結果、printf で表示した値、サニタイザの報告など）。
      最初に疑った場所と、それが違う（または正しい）と分かった理由も書く -->
+     [FAIL] 出力が期待値と違います（< 期待される出力 / > 実際の出力）
+          (期待値の 14 行目付近)
+        >   0  0
+          (期待値の 16,17 行目付近)
+        <   7  3
+        <   8  4
+        >   0  0
+          (期待値の 25,26 行目付近)
+        <   7  5  3  1
+        <   8  6  4  2
+        >   7  5  8  6
+        >   4  2  0  0
+[FAIL] サニタイザ (-fsanitize=address,undefined) が問題を検出しました
+        ==57484==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x503000000094 at pc 0x60ff0de49571 bp 0x7ffd84cfba20 sp 0x7ffd84cfba10
+        SUMMARY: AddressSanitizer: heap-buffer-overflow /home/kuro/projects/clang3/5/debugging_exercises_difficult/set1_multidimensional_arrays/problem.c:11 in rotate
+        詳しく見るには: cc -g -fsanitize=address,undefined problem.c -lpthread && ./a.out 
+>>> FAIL
 
+3x3だと行列が同じなのでcols,rowsどっちで並べても関係なくなる。
 
-
+## AIの利用
+なし
 ---
 
 ## set2_linked_lists

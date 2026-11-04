@@ -8,7 +8,7 @@
 void rotate(const int *src, int *dst, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            dst[j * cols + (rows - 1 - i)] = src[i * cols + j];
+            dst[j * rows + (rows - 1 - i)] = src[i * cols + j];
         }
     }
 }
