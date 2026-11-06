@@ -27,7 +27,7 @@ void remove_all(Node **head, int key) {
     Node *cur = *head;
     while (cur != NULL) {
         Node *next = cur->next;
-        while (cur->data == key) {
+        while (cur != NULL && cur->data == key) {
             next=cur->next;
             if (prev == NULL) {
                 *head = next;

@@ -62,24 +62,44 @@ i*cols+jで１次元に圧縮している、
 ## set2_linked_lists
 
 ### 1. 症状（どんな条件で失敗し、どんな条件では失敗しなかったか）
-
-
+削除するキーが連続しているときにエラー。
+Segmentation fault (core dumped)
 ### 2. 原因（どの関数の何行目の、何が間違っていたか）
-
-
+remove_all関数のキーを発見したときに
+prevにcurの次のアドレスを入れている
+次に連続でキーを発見したとき、curは消されるので
+prevの次のアドレスに情報がなくなる
+(説明難しい)
 ### 3. 修正内容（何をどう変えたか）
-
+if(cur->data==key)を
+while (cur->data == key && cur != NULL) {
+            next=cur->next;
+            if (prev == NULL) {
+                *head = next;
+            } else {
+                prev->next = next;
+            }
+            free(cur);
+            cur=next;
+        }
+に変えた。
 
 ### 4. なぜその修正で直るのか
-
+prev->nextがさすアドレスをキーがなくなるまで次のアドレスにする。最後までキーがあったらcur!=NULLに先に引っ掛かりcur->dataでNULL参照しない。
 
 ### 5. 観察と調べ方
 
 <!-- 自分の環境で実際に見た出力や値を貼る（make run の出力、gdb の bt や print の結果、printf で表示した値、サニタイザの報告など）。
      最初に疑った場所と、それが違う（または正しい）と分かった理由も書く -->
-
-
-
+     
+before: 1 -> 2 -> 3 -> 2 -> 4 -> NULL
+remove 2: 1 -> 3 -> 4 -> NULL
+before: 5 -> 7 -> 7 -> 8 -> NULL
+ここで終了する。
+ポインタを多用しているのでどこかでNULLを参照してそう。
+キーを消すのがwhileの中で１回だけなのでprev->nextが次のcurを指しているがもしこのcurがキーだった場合NULLを参照してしまうことが分かったので直した。
+## AIの利用
+なし
 ---
 
 ## set3_multithreading
