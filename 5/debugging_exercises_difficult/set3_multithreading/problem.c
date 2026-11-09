@@ -8,26 +8,28 @@
 typedef struct {
     int id;
     int sold;                 /* この窓口が売った枚数 */
-    pthread_mutex_t lock;
 } Counter;                    /* 販売窓口 */
+
+pthread_mutex_t lock=PTHREAD_MUTEX_INITIALIZER;
 
 int seats = SEATS;            /* 残り座席数（全窓口で共有） */
 
 /* 空席があれば1枚売る。売れたら1、満席なら0を返す */
-int sell(Counter *c) {
+int sell() {
+    pthread_mutex_lock(&lock);
     if (seats > 0) {
-        pthread_mutex_lock(&c->lock);
         seats--;
-        pthread_mutex_unlock(&c->lock);
+        pthread_mutex_unlock(&lock);
         return 1;
     }
+    pthread_mutex_unlock(&lock);
     return 0;
 }
 
 /* 満席になるまで売り続ける */
 void *window(void *arg) {
     Counter *c = arg;
-    while (sell(c)) {
+    while (sell()) {
         c->sold++;
     }
     return NULL;
@@ -40,7 +42,6 @@ int main(void) {
     for (int i = 0; i < THREADS; i++) {
         c[i].id = i;
         c[i].sold = 0;
-        pthread_mutex_init(&c[i].lock, NULL);
         pthread_create(&t[i], NULL, window, &c[i]);
     }
 

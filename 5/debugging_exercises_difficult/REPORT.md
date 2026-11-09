@@ -105,23 +105,48 @@ before: 5 -> 7 -> 7 -> 8 -> NULL
 ## set3_multithreading
 
 ### 1. 症状（どんな条件で失敗し、どんな条件では失敗しなかったか）
+sold  = 175666 (expected 100000)
+seats = -1 (expected 0)
 
 
 ### 2. 原因（どの関数の何行目の、何が間違っていたか）
-
+スレッドが各々mutexを持っていて互いに共有しているseatsのsell関数に同時にアクセスしてしまう
 
 ### 3. 修正内容（何をどう変えたか）
-
+pthread_mutex_t lock=PTHREAD_MUTEX_INITIALIZER;
+int sell() {
+    pthread_mutex_lock(&lock);
+    if (seats > 0) {
+        seats--;
+        pthread_mutex_unlock(&lock);
+        return 1;
+    }
+    pthread_mutex_unlock(&lock);
+    return 0;
+}
 
 ### 4. なぜその修正で直るのか
+別々のmutexを持っているのを全スレッドで共通のmutexを持ち排他処理を行った。
 
 
 ### 5. 観察と調べ方
 
 <!-- 自分の環境で実際に見た出力や値を貼る（make run の出力、gdb の bt や print の結果、printf で表示した値、サニタイザの報告など）。
      最初に疑った場所と、それが違う（または正しい）と分かった理由も書く -->
+     構造体にmutexの変数があるの違和感。mutexの使い方が違うかも.
+     window関数はカウンタ―ごとに別々のCounterを使うため競合はない
+## AIの利用
+スレッドを作った時の第三引数の役割
+pthread_create(&t[i], NULL, window, &c[i]);
+引数の意味は次の通りです。
 
+&t[i]：作成されたスレッドIDの保存先
+NULL：スレッド属性（標準設定）
+window：スレッドが開始すると実行する関数
+&c[i]：window に渡す引数
 
+#sym:pthread_mutex_lock の引数には何を指定するのか
+pthread_mutex_lock の引数には、ロック対象の pthread_mutex_t のアドレスを指定します。
 
 ---
 
