@@ -53,7 +53,8 @@ Node *delete(Node *r, int key) {
         /* 子が2つ: 右部分木の最小値（後継）で置き換え、後継を右部分木から削除する */
         Node *s = min_node(r->right);
         r->data = s->data;
-        r->right = delete(r->right, key);
+        int tmp=s->data;
+        r->right = delete(r->right, tmp);
     }
     return r;
 }
