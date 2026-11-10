@@ -153,23 +153,64 @@ pthread_mutex_lock の引数には、ロック対象の pthread_mutex_t のア�
 ## set4_file_io
 
 ### 1. 症状（どんな条件で失敗し、どんな条件では失敗しなかったか）
-
+tests/normal.txt     lines=4 words=13 bytes=73
+tests/crlf.txt       lines=3 words=5 bytes=28
+tests/longline.txt   lines=5 words=504 bytes=4012
+tests/missing.txt    cannot open
 
 ### 2. 原因（どの関数の何行目の、何が間違っていたか）
+fgetsはバッファのサイズー１を読み込み文字列に格納する。ファイル終端、改行に達したら停止して、改行文字を入れる。
+それ以外はヌル文字を入れる。
 
 
 ### 3. 修正内容（何をどう変えたか）
-
+*lines = *words = *bytes = 0;
+int c;
+    int in_word = 0;
+    while ((c=fgetc(fp)) != EOF) {
+        (*bytes)++;
+        if (c == '\n') {
+            (*lines)++;
+        }
+        if (isspace((unsigned char)c)) {
+            in_word = 0;
+        } else if (!in_word) {
+            (*words)++;
+            in_word = 1;
+        }
+    }
 
 ### 4. なぜその修正で直るのか
-
+fgetcで一文字づつ取りバッファを超える長い行が来ても関係なく処理できる。
+ファイル終端のEOFまで見て、スペースがあれば文字を増やし、改行があれば行の数を増やすようにした。
 
 ### 5. 観察と調べ方
 
 <!-- 自分の環境で実際に見た出力や値を貼る（make run の出力、gdb の bt や print の結果、printf で表示した値、サニタイザの報告など）。
      最初に疑った場所と、それが違う（または正しい）と分かった理由も書く -->
 
+tests/normal.txt     lines=4 words=11 bytes=73
+tests/crlf.txt       lines=3 words=3 bytes=28
+tests/longline.txt   lines=2 words=502 bytes=4012
+tests/missing.txt    cannot open
 
+期待値と比べると、normal.txt は単語数が 2 少なく、crlf.txt は単語数が 1 少なかった。一方、longline.txt の行数と単語数は一致していたため、最初は長い行だけが原因ではない。
+
+normal.txt のタブや改行、crlf.txt の \r\n が空白として扱われていない。
+
+
+## AIの利用
+スペースを判定する方法
+
+スペースなどの空白文字は、isspace() で判定できます。
+isspace() が空白と判定する文字には、次が含まれます。
+
+半角スペース ' '
+タブ '\t'
+改行 '\n'
+復帰文字 '\r'
+垂直タブ '\v'
+フォームフィード '\f'
 
 ---
 
@@ -191,5 +232,3 @@ pthread_mutex_lock の引数には、ロック対象の pthread_mutex_t のア�
 
 <!-- 自分の環境で実際に見た出力や値を貼る（make run の出力、gdb の bt や print の結果、printf で表示した値、サニタイザの報告など）。
      最初に疑った場所と、それが違う（または正しい）と分かった理由も書く -->
-
-

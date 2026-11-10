@@ -1,8 +1,6 @@
 // set4: ファイルの行数・単語数・バイト数を数える
 #include <stdio.h>
-#include <string.h>
-
-#define BUF_SIZE 1024
+#include <ctype.h>
 
 /* path のファイルの行数・単語数・バイト数を数える。開けなければ -1 を返す */
 int count_file(const char *path, long *lines, long *words, long *bytes) {
@@ -11,13 +9,19 @@ int count_file(const char *path, long *lines, long *words, long *bytes) {
         return -1;
     }
 
-    char buf[BUF_SIZE];
     *lines = *words = *bytes = 0;
-    while (fgets(buf, sizeof(buf), fp) != NULL) {
-        (*lines)++;
-        *bytes += strlen(buf);
-        for (char *tok = strtok(buf, " \t\n"); tok != NULL; tok = strtok(NULL, " \t\n")) {
+    int c;
+    int in_word = 0;
+    while ((c=fgetc(fp)) != EOF) {
+        (*bytes)++;
+        if (c == '\n') {
+            (*lines)++;
+        }
+        if (isspace((unsigned char)c)) {
+            in_word = 0;
+        } else if (!in_word) {
             (*words)++;
+            in_word = 1;
         }
     }
     fclose(fp);
